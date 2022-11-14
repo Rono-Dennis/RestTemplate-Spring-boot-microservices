@@ -1,12 +1,15 @@
 package com.example.userservice.controller;
 
 
-import com.example.userservice.VO.ResponseTemplateVO;
+import com.example.userservice.connection.ResponseTemplate;
 import com.example.userservice.entity.User;
+import com.example.userservice.repository.UserRepository;
 import com.example.userservice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -16,6 +19,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserRepository userRepository;
+
 
     @PostMapping("/")
     public User saveUser(@RequestBody User user) {
@@ -23,10 +29,21 @@ public class UserController {
         return userService.saveUser(user);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/all")
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
+    }
+
+    /*@GetMapping("/{id}")
     public ResponseTemplateVO getUsersWithDepartment(@PathVariable("id") Long userId) {
         log.info("inside getUserWithResponse of UserController");
         return userService.getUserWithDepartment(userId);
+    }*/
+
+    @GetMapping("/{id}")
+    public ResponseTemplate getUsersWithDepartment(@PathVariable("id") Long userId){
+        log.info("inside getUserWithResponse of UserController");
+        return userService.getUserWithDepartments(userId);
     }
 
 }

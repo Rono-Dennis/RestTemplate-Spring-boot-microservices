@@ -1,7 +1,7 @@
 package com.example.userservice.service;
 
-import com.example.userservice.VO.Department;
-import com.example.userservice.VO.ResponseTemplateVO;
+import com.example.userservice.connection.Department;
+import com.example.userservice.connection.ResponseTemplate;
 import com.example.userservice.entity.User;
 import com.example.userservice.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -24,16 +24,14 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public ResponseTemplateVO getUserWithDepartment(Long userId) {
+    public ResponseTemplate getUserWithDepartments(Long userId){
+        ResponseTemplate responseTemplate =new ResponseTemplate();//http://localhost:9090/department/
+        User user = userRepository.findByUserId(userId);//http://DEPARTMENT-SERVICE/department/
+        Department department = restTemplate.getForObject("http://DEPARTMENT-SERVICE/department/"+ user.getDepartmentId(), Department.class);
 
-        ResponseTemplateVO vo = new ResponseTemplateVO();
-        User user = userRepository.findByUserId(userId);
+        responseTemplate.setUser(user);
+        responseTemplate.setDepartment(department);
 
-        Department department = restTemplate.getForObject("http://DEPARTMENT-SERVICE/department/" + user.getDepartmentId(), Department.class);
-
-        vo.setUser(user);
-        vo.setDepartment(department);
-
-        return vo;
+        return responseTemplate;
     }
 }

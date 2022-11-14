@@ -1,14 +1,17 @@
 server:
   port: 9090
 
+#spring:
+#  application:
+#    name: USER-SERVICE
+#  zipkin:
+#    base-url: http://127.0.0.1:9411/
 spring:
   application:
     name: DEPARTMENT-SERVICE
-#  cloud:
-#    config:
-#      enabled: true
-#      uri: http://localhost:9296
-#
+  zipkin:
+    base-url: http://127.0.0.1:9411/
+
 
 
 eureka:
